@@ -1,0 +1,54 @@
+{
+    "name": "binarcode/laravel-stateless-session",
+    "description": "This package allow you to keep the session through request/response header. No cookie needed.",
+    "keywords": [
+        "binarcode",
+        "laravel-stateless-session"
+    ],
+    "homepage": "https://github.com/binarcode/laravel-stateless-session",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Eduard Lupacescu",
+            "email": "eduard.lupacescu@binarcode.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.2",
+        "illuminate/support": "^6.0|^7.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^4.0",
+        "phpunit/phpunit": "^8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Binarcode\\LaravelStatelessSession\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Binarcode\\LaravelStatelessSession\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Binarcode\\LaravelStatelessSession\\LaravelStatelessSessionServiceProvider"
+            ],
+            "aliases": {
+                "LaravelStatelessSession": "Binarcode\\LaravelStatelessSession\\LaravelStatelessSessionFacade"
+            }
+        }
+    }
+}
