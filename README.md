@@ -23,7 +23,6 @@ composer require binarcode/laravel-stateless-session
 ```
 
 ## Usage
-
 1. Trigger session, make a GET request to: `/api/csrf-header`. This will return a header with the session key and an optional header with CSRF token `XSRF-TOKEN`. 
 The header name could be configured in: `stateless.header`
 
@@ -39,7 +38,6 @@ use Binarcode\LaravelStatelessSession\Http\Middleware\StatelessVerifyCsrfToken;
     StatelessVerifyCsrfToken::class,
 ]);
 ```
-
 You can create a middleware group in your Http\Kernel with these 2 routes as:
 
 ```php
@@ -76,6 +74,58 @@ stateless.header => env('STATELESS_HEADER', 'X-STATELESS-HEADER')
 ```
 
 Danger: The key name separators should use `-` not `_` [according with this](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers).
+
+### Real use case
+
+Let's say you want to allow visitors to submit a newsletter form. You want also to protect your API with CSRF. 
+
+You can setup a GoogleRecaptcha for that, but that's so annoying. 
+
+Solution: 
+
+Vue newsletter page:
+
+```js
+// Newsletter.vue
+{
+    async created() {
+        const response = await axios.get(`${host}/api/csrf-header`);
+        this.csrfToken =  response.headers['XSRF-TOKEN'];
+        this.sessionKey =  response.headers['LARAVEL-SESSION'];
+    },
+    methods: {
+    
+        async subscribe() {
+            await axios.post(`${host}/api/newsletter`, {email: 'foo@bar.com'}, {
+                headers: { 
+                    'LARAVEL-SESSION': this.sessionKey, 
+                    'X-CSRF-TOKEN': this.csrfToken
+                }
+            });
+        }   
+        
+    }
+}
+```
+
+`api.php`
+
+```php
+Route::post('api/subscribe', function (Request $request) {
+
+    // at this point the CSRF token is verified 
+
+    Subscribers::createFromEmail($request->get('email'));
+
+    return response('', 201)->json();
+
+})->middleware([
+    StartStatelessSession::class,
+    VerifyHeaderCsrfToken::class,
+]);
+
+```
+
 ### Testing
 
 ``` bash

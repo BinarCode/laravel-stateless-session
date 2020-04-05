@@ -58,6 +58,7 @@ class StatelessStartSession extends StartSession
     {
         if ($this->sessionIsPersistent($config = $this->manager->getSessionConfig())) {
             $response->headers->set($session->getName(), $session->getId(), true);
+            $response->headers->set('Access-Control-Expose-Headers', [$session->getName(), 'XSRF-TOKEN'], true);
         }
     }
 }
