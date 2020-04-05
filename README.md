@@ -24,39 +24,37 @@ composer require binarcode/laravel-stateless-session
 
 ## Usage
 
-To initiate the session you can use this middleware:
+1. Trigger session, make a GET request to: `/api/csrf-header`. This will return a header with the session key and an optional header with CSRF token `XSRF-TOKEN`. 
+The header name could be configured in: `stateless.header`
 
-``` php
-->middleware(\Binarcode\LaravelStatelessSession\Http\Middleware\StartStatelessSession::class)
+2. Use this session key for every request you want to take care of the session.
+
+3. If you want to benefit of the CSRF protection of your requests, you should add the follow middleware to your routes:
+```php
+->middleware(Binarcode\LaravelStatelessSession\Http\Middleware\VerifyHeaderCsrfToken::class);
 ```
 
-To protect some routes with CSRF token just use this middleware:
+Now the server will return 419 (Page expired code). Unless you send back a request header named: `X-CSRF-TOKEN` with the value received by the first GET request in the `XSRF-TOKEN` header.
 
-``` php
-->middleware([ 
-\Binarcode\LaravelStatelessSession\Http\Middleware\StartStatelessSession::class,
-\Binarcode\LaravelStatelessSession\Http\Middleware\VerifyHeaderCsrfToken::class, 
-]) 
-// this will return back a response header `XSRF-TOKEN`
-```
+That's it.
 
+At this point you have CSRF protection. 
 
-Any GET request with `stateless.session` or `stateless.csrf` will return back a response header with key 
-configured in `config('stateless.header')`.
-
-This header should be sent back to the server with the same name, so the SessionManager could find the right session.
-
-If the request should perform a csrf check, just add a `X-CSRF-TOKEN` with the value received in the previous request 
-under `XSRF-TOKEN` header name.
+And you can play with `SessionManager` and use the `session()` helper to store/get information (e.g. flash sessions).
 
 ## Config
 
-The API will inject into headers the session key. The session key name could be configured in the:
+The lifetime and other options could be set as before in the `session` file.
+
+The `VerifyHeaderCsrfToken` and `StartStatelessSession` middlewares will inject into headers the session key.
+
+The session key name could be configured in the:
 
 ```php
 stateless.header => env('STATELESS_HEADER', 'X-STATELESS-HEADER')
 ```
 
+Danger: The key name separators should use `-` not `_` [according with this.](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers).
 ### Testing
 
 ``` bash
