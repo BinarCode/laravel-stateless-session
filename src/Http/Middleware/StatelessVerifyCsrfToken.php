@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as Middleware;
 use Illuminate\Session\TokenMismatchException;
 
-class VerifyHeaderCsrfToken extends Middleware
+class StatelessVerifyCsrfToken extends Middleware
 {
     /**
      * Handle an incoming request.

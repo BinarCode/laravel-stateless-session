@@ -27,20 +27,41 @@ composer require binarcode/laravel-stateless-session
 1. Trigger session, make a GET request to: `/api/csrf-header`. This will return a header with the session key and an optional header with CSRF token `XSRF-TOKEN`. 
 The header name could be configured in: `stateless.header`
 
-2. Use this session key for every request you want to take care of the session.
+2. Use this header session key/value for every request you want to take care of the session.
 
-3. If you want to benefit of the CSRF protection of your requests, you should add the follow middleware to your routes:
+3. If you want to benefit of the CSRF protection of your requests, you should add the follow middlewares to your routes:
 ```php
-->middleware(Binarcode\LaravelStatelessSession\Http\Middleware\VerifyHeaderCsrfToken::class);
+use Binarcode\LaravelStatelessSession\Http\Middleware\StatelessStartSession;
+use Binarcode\LaravelStatelessSession\Http\Middleware\StatelessVerifyCsrfToken;
+
+->middleware([
+    StatelessStartSession::class,
+    StatelessVerifyCsrfToken::class,
+]);
 ```
 
-Now the server will return 419 (Page expired code). Unless you send back a request header named: `X-CSRF-TOKEN` with the value received by the first GET request in the `XSRF-TOKEN` header.
+You can create a middleware group in your Http\Kernel with these 2 routes as:
 
-That's it.
+```php
+protected $middlewareGroups = [
+// ...
+    'stateless.csrf' => [
+        StatelessStartSession::class,
+        StatelessVerifyCsrfToken::class,
+    ],
+// ...
+]
+```
 
-At this point you have CSRF protection. 
+Now the server will return 419 (Page expired code).
+ 
+Unless you send back a request header named: `X-CSRF-TOKEN` with the value received by the first GET request in the `XSRF-TOKEN` header.
 
-And you can play with `SessionManager` and use the `session()` helper to store/get information (e.g. flash sessions).
+Done.
+
+- At this point you have CSRF protection. 
+
+- And you can play with `SessionManager` and use the `session()` helper to store/get information (e.g. flash sessions).
 
 ## Config
 

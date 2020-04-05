@@ -9,7 +9,7 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Session\Store;
 use Symfony\Component\HttpFoundation\Response;
 
-class StartStatelessSession extends StartSession
+class StatelessStartSession extends StartSession
 {
     public function handle($request, Closure $next)
     {
