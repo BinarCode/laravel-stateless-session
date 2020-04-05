@@ -54,7 +54,7 @@ The session key name could be configured in the:
 stateless.header => env('STATELESS_HEADER', 'X-STATELESS-HEADER')
 ```
 
-Danger: The key name separators should use `-` not `_` [according with this.](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers).
+Danger: The key name separators should use `-` not `_` [according with this](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers).
 ### Testing
 
 ``` bash
