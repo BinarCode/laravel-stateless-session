@@ -142,6 +142,9 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 ### Security
 
+Since the Session Key and X-CSRF-TOKEN could be read by the JavaScript code, that means it's less secure than a usual
+http-only Cookie. Think of this as of the Bearer token. The security impact is exactly the same.
+
 If you discover any security related issues, please email eduard.lupacescu@binarcode.com instead of using the issue tracker.
 
 ## Credits
