@@ -31,7 +31,7 @@ class LaravelStatelessSessionServiceProvider extends ServiceProvider
         $this->registerSessionManager();
 
         // Automatically apply the package configuration
-        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'laravel-stateless-session');
+        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'stateless');
 
         $this->app->singleton('laravel-stateless-session', function () {
             return new LaravelStatelessSession;

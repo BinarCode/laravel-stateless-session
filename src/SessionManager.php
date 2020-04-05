@@ -17,7 +17,7 @@ class SessionManager extends LaravelSessionManager
     {
         return $this->app['config']['session.encrypt']
             ? $this->buildEncryptedSession($handler)
-            : new Store($this->app['config']['session.header'], $handler);
+            : new Store($this->app['config']['stateless.header'], $handler);
     }
 
 }
