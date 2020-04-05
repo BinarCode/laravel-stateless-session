@@ -1,6 +1,6 @@
 # CSRF verification and session persistent through request/response headers.
 
-This is a lightweight package wich allow you to manage a session in a stateless communication (REST/API) when the
+This is a lightweight package which allow you to manage a session in a stateless communication (REST/API) when the
 API domain and main web application domain are different.
 
 E.g. 
