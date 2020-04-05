@@ -18,7 +18,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Header Cookie Name
+    | Session Header Name
     |--------------------------------------------------------------------------
     |
     | Here you may change the name of the header used to identify a session
