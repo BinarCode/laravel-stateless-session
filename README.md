@@ -75,6 +75,14 @@ stateless.header => env('STATELESS_HEADER', 'X-STATELESS-HEADER')
 
 Danger: The key name separators should use `-` not `_` [according with this](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers).
 
+You can customize the middleware for the `csrf-header` route. In some cases you may need some custom cors middleware for example:
+
+```php
+stateless.middleware => [ 
+    \Barryvdh\Cors\HandleCors::class,
+]
+```
+
 ### Real use case
 
 Let's say you want to allow visitors to submit a newsletter form. You want also to protect your API with CSRF. 
