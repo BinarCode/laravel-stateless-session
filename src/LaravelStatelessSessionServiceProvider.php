@@ -57,7 +57,7 @@ class LaravelStatelessSessionServiceProvider extends ServiceProvider
             return;
         }
 
-        Route::group(['prefix' => config('stateless.prefix', 'api')], function () {
+        Route::group(['prefix' => config('stateless.prefix', 'api'), 'middleware' => config('stateless.middleware'),], function () {
             Route::get(
                 '/csrf-header',
                 CsrfHeaderController::class . '@show'
